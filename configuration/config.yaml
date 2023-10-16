@@ -1,0 +1,19 @@
+seed: 42
+
+device: "cuda"
+
+data_filepath: "../data/SG.csv"
+test_ratio: 0.3
+
+sequence_length: 10
+
+input_dim: 1
+hidden_dim: 128
+number_of_lstm_layers: 2
+output_dim: 1
+
+epoch_count: 100
+batch_size: 128
+learning_rate: 0.01
+
+results_path: "../experiments/"
