@@ -23,9 +23,9 @@ Parameters for training model are stored in YAML file in path `configuration/con
 
 1. Select timeseries data csv file for forecasting, and specify it using the `--input` argument.. By default, the code assumes that the data is in the file `../data/SG.csv`.
 2. Choose the quantity type (from timeseries csv columns) for forecasting, and specify it using the `--quantity` argument. By default, the code assumes `Consumption.csv`.
-3. Option to save trained model and his results, by using the `--save_results` argument. By default, results are saved in `experiments/{quantity_type}/`.
+3. Option to save trained model and his results, by using the `--save_results` argument. By default, results are saved in `experiments/{quantity_type}/`. But can be changed in configuration YAML file.
 
-Run the main script to train the LSTM model and make predictions on the test dataset. The following command will train the model:
+Run the main script from `src` folder to train the LSTM model and make predictions on the test dataset. The following command will train the model:
 ```
 python main.py --input ../data/SG.csv --quantity Consumption`
 ```
@@ -40,8 +40,6 @@ The project calculates and prints three key metrics for forecast evaluation:
 
 ### Results
 
-The results can be found in the specified results directory, which is set in the `config.yaml` file. The results include:
-
 - model.pt: A trained LSTM model weights.
 - scaling_parameters.pkl: A pickle file containing parameters for preprocessing scaling MinMaxScaler instance from sciki-learn.
 - loss.pdf: A plot showing the progression of training and test loss during training.
@@ -49,19 +47,20 @@ The results can be found in the specified results directory, which is set in the
 - metrics.csv: A CSV file containing the computed metrics.
 
 ### Unit Testing
-The project has single unit test, that deals with testing model's capability to forward propagate input sequence. Can be run by following command:
+The project has single unit test, that deals with testing model's capability to forward propagate input sequence. Can be run by following command in `src` folder:
 
 ```
 python tests.py
 ```
 
 ## TODO
+
 - Add script to load trained model and then make predictions on new data of similar format.
+- Add more tests.
 - Remove overuse of config_dict[key] syntax in main.py and achieve higher experiment customization by using hydra configs.
 - Add training specificication for optimizer and loss function types.
 - Add proper validation training.
 - Generate new folder for each new experiment with naming convention based on ID generated from hash seeded by current time.
-- Add more tests.
 - LARGE: Setup lightweight (no pytorch, trained weight in ONNX format) docker fastapi container with endpoints for inference.
 
 ## License
