@@ -17,3 +17,4 @@ batch_size: 128
 learning_rate: 0.01
 
 results_path: "../experiments/"
+onnx_input_batch_size: 1 # Recommended to be 1, due to reccurent layers
