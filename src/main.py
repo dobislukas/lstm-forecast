@@ -8,7 +8,8 @@ import torch
 from model import LSTMModel
 from utils import read_experiment_config, set_seed, calculate_mape_metric, \
                   calculate_mae_metric, calculate_rmse_metric, \
-                  plot_loss, plot_forecast, save_experiment
+                  plot_loss, plot_forecast, save_experiment, \
+                  save_model_as_onnx
 from train_and_evaluate import get_dataloaders, train_model, \
                                predict_data_from_loader
 
@@ -134,6 +135,17 @@ def main() -> None:
             save_directory=save_directory,
             model=model, scaler=scaler,
             metrics=metrics_dict, quantity_type=quantity_type)
+
+        # Save model in ONNX format
+        onnx_input = torch.randn(
+            config_dict["onnx_input_batch_size"],
+            config_dict["sequence_length"],
+            config_dict["input_dim"])
+
+        model.to("cpu")
+        save_model_as_onnx(
+            save_directory=save_directory,
+            model=model, onnx_input=onnx_input)
 
         print(f"Results were successfully saved in directory {save_directory}")
 

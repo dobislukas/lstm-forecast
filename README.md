@@ -23,7 +23,7 @@ Parameters for training model are stored in YAML file in path `configuration/con
 
 1. Select timeseries data csv file for forecasting, and specify it using the `--input` argument.. By default, the code assumes that the data is in the file `../data/SG.csv`.
 2. Choose the quantity type (from timeseries csv columns) for forecasting, and specify it using the `--quantity` argument. By default, the code assumes `Consumption.csv`.
-3. Option to save trained model and his results, by using the `--save_results` argument. By default, results are saved in `experiments/{quantity_type}/`. But can be changed in configuration YAML file.
+3. Option to save trained model and his results, by using the `--save_results` argument. By default, results are saved in `../experiments/{quantity_type}/`. But can be changed in configuration YAML file.
 
 Run the main script from `src` folder to train the LSTM model and make predictions on the test dataset. The following command will train the model:
 ```
@@ -40,11 +40,26 @@ The project calculates and prints three key metrics for forecast evaluation:
 
 ### Results
 
-- model.pt: A trained LSTM model weights.
+- model.pt: A trained LSTM model weights in PyTorch dict format.
+- model.onnx: A trained LSTM model weights in ONNX format.
 - scaling_parameters.pkl: A pickle file containing parameters for preprocessing scaling MinMaxScaler instance from sciki-learn.
 - loss.pdf: A plot showing the progression of training and test loss during training.
 - forecast.pdf: A plot displaying the ground truth and predicted values over time for data not used in training.
 - metrics.csv: A CSV file containing the computed metrics.
+
+### Inference
+
+1. Select timeseries data csv file for forecasting, and specify it using the `--input` argument.. By default, the code assumes that the data is in the file `../data/SG.csv`.
+2. Choose the quantity type (from timeseries csv columns) for forecasting, and specify it using the `--quantity` argument. By default, the code assumes `Consumption.csv`.
+3. Choose directory with model saved in onnx format, by using the `--model_dir` argument. By default, model is chosen on default path of the `--save_results` argument from main script.
+
+Run the inference script from `src` folder to make predictions on data specified by input argument.
+Infered predictions are saved in csv file together with original values (and their plot) in directory specified by the `--model_dir` argument.
+
+The following command will make predictions:
+```
+python inference.py --input ../data/SG.csv --quantity Consumption --model_dir ../experiments/Consumption/`
+```
 
 ### Unit Testing
 The project has single unit test, that deals with testing model's capability to forward propagate input sequence. Can be run by following command in `src` folder:
@@ -55,7 +70,7 @@ python tests.py
 
 ## TODO
 
-- Add script to load trained model and then make predictions on new data of similar format.
+- Add logger.
 - Add more tests.
 - Remove overuse of config_dict[key] syntax in main.py and achieve higher experiment customization by using hydra configs.
 - Add training specificication for optimizer and loss function types.
